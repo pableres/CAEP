@@ -1,0 +1,39 @@
+library(ggplot2)
+#create Grouing variable as factor and include labels#
+bfisio<- data.frame(bfisio[complete.cases(bfisio), ])
+bfisio$Group <- as.factor(bfisio$Group)
+levels(bfisio$Group) <- c("Condom", "No condom")
+
+#it creates the graph# 
+p1<-ggplot(bfisio, aes(x=IIEF, y=inc_med, color=Group, shape=Group))+
+  geom_point()+ 
+  geom_smooth(method=lm)+
+  theme_bw()+ xlab("IIEF-5") + ylab(" av % circumference ?? ") + labs(color="Group" , shape="Group")
+p1
+#include the regression values whitin the graph stat_smooth_func function is need#
+p1 + stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE)
+
+
+p2<-ggplot(bfisio, aes(x=IIEF, y=inc_max, color=Group, shape=Group))+
+  geom_point()+ 
+  geom_smooth(method=lm)+
+  theme_bw()+ xlab("IIEF-5") + ylab("max % circumference ?? ") + labs(color="Group" , shape="Group")
+p2
+p2 + stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE)
+
+p3<-ggplot(bfisio, aes(x=IIEF, y=latency, color=Group, shape=Group))+
+  geom_point()+ 
+  geom_smooth(method=lm)+
+  theme_bw()+ xlab("IIEF-5") + ylab("erection latency (sec)") + labs(color="Group" , shape="Group")
+p3
+p3 + stat_smooth_func(geom="text",method="lm",hjust=0,parse=TRUE)
+
+p4<-ggplot(bfisio, aes(x=IIEF, y=duration, color=Group, shape=Group))+
+  geom_point()+ 
+  geom_smooth(method=lm)+
+  theme_bw()+ xlab("IIEF-5") + ylab("erection duration (sec)") + labs(color="Group" , shape="Group")
+p4
+p4 + stat_smooth_func(geom="text",method="lm",hjust=,parse=TRUE)
+
+#it agrupates all the graphs#
+ggpubr::ggarrange(p1, p2, p3, p4, labels = c("A", "B", "C" ,"D"),common.legend = TRUE, legend = "bottom")
